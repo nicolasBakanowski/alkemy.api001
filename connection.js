@@ -4,7 +4,7 @@ const sequelize = new Sequelize(process.env.DATABASE, process.env.USERDB , proce
     host: 'localhost',
     dialect:'mysql',
     define: {
-        timestamps: false
+        timestamps: true
     }
 });
 
