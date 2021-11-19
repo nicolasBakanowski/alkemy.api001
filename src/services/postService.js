@@ -54,57 +54,22 @@ async function editPost(request,response){
         }
     })
     if (existTitle > 0) return response.status(400).send({status:"this title already exists"})
-    if (request.body.title != undefined){
-        await Post.update({
-            title : request.body.title
-        },
-        {   
-            where:{
-            id: request.params.id
+    const existCategory = await Category.count({
+        where:{
+            id:request.params.id
         }
-            })
-        }
-    if (request.body.content != undefined){
-        await Post.update({
-            content : request.body.content
-        },
-        {   
-            where:{
-            id: request.params.id
-        }
-            })
-        }
-    if (request.body.image != undefined){
-        await Post.update({
-            image : request.body.image
-        },
-        {   
-            where:{
-            id: request.params.id
-        }
-            })
-        }
-    if (request.body.categories_id != undefined){
-        const existCategory = await Category.count({
-            where: {
-                id: request.body.categories_id
-            }
-        })
-        if (existCategory < 1) return response.status(400).send({status: "this category don't exists"})
-        await Post.update({
-            categories_id : request.body.categories_id
-        },
-        {   
-            where:{
-            id: request.params.id
-        }
-            })
-        }     
+    })
+    
+    if (existCategory == 0) return response.status(400).send({status:"this category does exists"})
+
     const post = await Post.findOne({
         where:{
             id: request.params.id
         }
     })                   
+        
+    Object.assign(post, request.body)
+    await post.save()  
     return post
 }
 

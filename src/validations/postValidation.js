@@ -10,15 +10,22 @@ const createPost = {
 
     }) 
 }
+
+
 const editPost = {
-    body: Joi.object({
+    params: Joi.object().keys({
+      id: Joi.number().min(1).required()
+    }),
+    body: Joi.object()
+      .keys({
         title: Joi.string(),
         content: Joi.string(),
         image: Joi.custom(isImage),
         categories_id: Joi.number().min(1)
+      })
+      .min(1),
+  };
 
-    }) 
-}
 module.exports = {
     createPost,
     editPost
