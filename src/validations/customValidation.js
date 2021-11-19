@@ -4,6 +4,13 @@ const isImage = (value, helpers)=>{
     }
     return helpers.message('no es una imagen valida ')
 }
+
+
+
+
 module.exports = {
     isImage
 }
+
+
+  

@@ -10,6 +10,16 @@ const createPost = {
 
     }) 
 }
+const editPost = {
+    body: Joi.object({
+        title: Joi.string(),
+        content: Joi.string(),
+        image: Joi.custom(isImage),
+        categories_id: Joi.number().min(1)
+
+    }) 
+}
 module.exports = {
-    createPost
+    createPost,
+    editPost
 }
