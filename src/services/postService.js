@@ -1,5 +1,4 @@
 const { response, request } = require('express')
-
 const Post = require('../models/postModel')
 const Category = require ('../models/categoryModel')
 require('dotenv') 
@@ -25,6 +24,23 @@ async function createPost(request,response){
     )
     return newPost
 }
+
+
+async function getPost(request,response){
+    Post.belongsTo(Category, {foreignKey: 'categories_id'})
+    const post = await Post.findAll({
+        include:[{
+            model: Category,
+        }],
+        where:{
+            id: request.params.id
+        }
+    });
+    if (post.length <1) return response.status(404).send({status:'No hay post que mostrar'})
+    return post
+}
+
+
 
 async function getPosts(request,response){
     Post.belongsTo(Category, {foreignKey: 'categories_id'})
@@ -66,15 +82,33 @@ async function editPost(request,response){
         where:{
             id: request.params.id
         }
-    })                   
-        
-    Object.assign(post, request.body)
-    await post.save()  
+        })                   
+        Object.assign(post, request.body)
+        await post.save()  
     return post
 }
+
+
+async function deletePost(request,response){
+    const post = await Post.findOne({
+        where:{
+            id: request.params.id
+        }
+    })                   
+    if (!post) return response.status(404).send({status:'there is no post with that id'})
+    await Post.destroy({
+        where: {
+            id: request.params.id 
+        }
+    }) 
+    return response.status(200).send({status:'the post has been deleted'})
+}
+
 
 module.exports = {
     createPost,
     getPosts,
-    editPost
+    getPost,
+    editPost,
+    deletePost
 }

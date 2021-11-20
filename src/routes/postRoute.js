@@ -10,6 +10,8 @@ router.route('/')
     .get(postController.getPosts)
 
 router.route('/:id')
-.patch(validate(postValidation.editPost), postController.editPost)
+    .get(validate(postValidation.getPost),postController.getPost)
+    .patch(validate(postValidation.editPost), postController.editPost)
+    .delete(validate(postValidation.deletePost),postController.deletePost)
     
 module.exports = router

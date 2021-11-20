@@ -10,7 +10,10 @@ const createPost = {
 
     }) 
 }
-
+const getPost={
+    params: Joi.object(),
+        id: Joi.number().min(1).required()
+}
 
 const editPost = {
     params: Joi.object().keys({
@@ -24,9 +27,16 @@ const editPost = {
         categories_id: Joi.number().min(1)
       })
       .min(1),
-  };
+};
+
+const deletePost={
+    params: Joi.object(),
+        id: Joi.number().min(1).required()
+}  
 
 module.exports = {
     createPost,
-    editPost
+    editPost,
+    getPost,
+    deletePost
 }
